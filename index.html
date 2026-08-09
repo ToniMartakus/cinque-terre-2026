@@ -1,0 +1,772 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <meta name="theme-color" content="#2f5d50"/>
+  <title>Cinque Terre · Viaje familiar 2026</title>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <link rel="icon" type="image/png" sizes="64x64" href="icons/favicon-64.png"/>
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png"/>
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="Cinque Terre"/>
+  <style>
+    :root{
+      --cream:#f7f1e3; --paper:#fffdf7; --olive:#2f5d50; --terracotta:#c85b3c;
+      --sea:#2d7e9f; --gold:#d1a54b; --ink:#243029; --muted:#6f7a73; --line:#ded8ca;
+      --soft:#efe7d5; --good:#2d6a4f; --warn:#b26a00; --danger:#a33a2d;
+      --shadow:0 8px 28px rgba(46,62,54,.10); --r:18px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;background:var(--cream);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    body{padding-bottom:92px}
+    a{color:inherit}
+    .app{max-width:980px;margin:0 auto}
+    header.hero{padding:22px 18px 16px;background:
+      linear-gradient(135deg,rgba(47,93,80,.98),rgba(45,126,159,.92));color:white}
+    .eyebrow{font-size:.78rem;letter-spacing:.11em;text-transform:uppercase;opacity:.82}
+    h1{font-size:2rem;margin:.25rem 0 .35rem;line-height:1.05}
+    .sub{opacity:.9;font-size:.96rem}
+    .nowcard{margin:16px 14px 0;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);
+      backdrop-filter:blur(6px);padding:14px;border-radius:16px}
+    .nowrow{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .nowtitle{font-weight:800;font-size:1.05rem}
+    .pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;font-size:.78rem;background:#ffffff1d;border:1px solid #ffffff36}
+    main{padding:14px}
+    .section{margin:12px 0 20px}
+    .section h2{font-size:1.12rem;margin:0 0 10px}
+    .grid-days{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    @media(min-width:700px){.grid-days{grid-template-columns:repeat(4,minmax(0,1fr))}}
+    .daycard,.card{background:var(--paper);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:var(--r)}
+    .daycard{padding:14px;cursor:pointer;transition:.15s}
+    .daycard:active{transform:scale(.99)}
+    .daynum{font-size:.78rem;color:var(--muted);text-transform:uppercase}
+    .daytitle{font-weight:800;margin-top:4px}
+    .tiny{font-size:.8rem;color:var(--muted);margin-top:6px}
+    .card{padding:15px;margin:10px 0}
+    .activity{border-left:5px solid var(--sea)}
+    .activity.morning{border-left-color:var(--gold)}
+    .activity.afternoon{border-left-color:var(--sea)}
+    .activity.night{border-left-color:var(--terracotta)}
+    .acthead{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .acttime{font-weight:800}
+    .tag{font-size:.75rem;background:var(--soft);padding:5px 8px;border-radius:999px}
+    .cols{display:grid;gap:10px}
+    @media(min-width:780px){.cols.two{grid-template-columns:1fr 1fr}}
+    ul.clean{margin:.5rem 0 .2rem;padding-left:1.15rem}
+    ul.clean li{margin:.3rem 0}
+    .notice{padding:10px 12px;border-radius:12px;background:#fff7e7;border:1px solid #efd9ac;color:#6f5209}
+    .ok{background:#eef8f3;border-color:#cae6d8;color:#214f3d}
+    .danger{background:#fff0ec;border-color:#edcbc0;color:#7f3428}
+    .toolbar{display:flex;gap:8px;flex-wrap:wrap}
+    button,.btn{border:0;border-radius:12px;padding:10px 12px;font-weight:750;cursor:pointer;background:var(--olive);color:white}
+    button.secondary,.btn.secondary{background:var(--soft);color:var(--ink)}
+    button.sea{background:var(--sea)}
+    button.red{background:var(--terracotta)}
+    .tabs{position:fixed;z-index:20;bottom:0;left:0;right:0;background:#fffaf0f0;backdrop-filter:blur(10px);
+      border-top:1px solid var(--line);display:flex;justify-content:center;padding:8px 8px calc(8px + env(safe-area-inset-bottom))}
+    .tabin{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;width:min(920px,100%)}
+    .tab{background:transparent;color:var(--muted);padding:7px 4px;font-size:.78rem;border-radius:10px}
+    .tab.active{background:var(--soft);color:var(--olive)}
+    .hidden{display:none!important}
+    .budget-big{font-size:2rem;font-weight:900}
+    .metric{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line)}
+    .metric:last-child{border-bottom:0}
+    .paid{color:var(--good);font-weight:800}
+    .pending{color:var(--warn);font-weight:800}
+    .expense-form{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .expense-form input,.expense-form select{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;background:white}
+    .expense-form .wide{grid-column:1/-1}
+    table{width:100%;border-collapse:collapse;font-size:.88rem}
+    th,td{text-align:left;padding:9px 6px;border-bottom:1px solid var(--line)}
+    th{color:var(--muted);font-size:.78rem;text-transform:uppercase}
+    .small{font-size:.82rem;color:var(--muted)}
+    .statusdot{width:9px;height:9px;border-radius:50%;background:var(--good);display:inline-block}
+    .reserve{display:flex;justify-content:space-between;gap:12px;align-items:center}
+    .money{font-variant-numeric:tabular-nums}
+    details{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:11px 12px;margin:8px 0}
+    summary{cursor:pointer;font-weight:800}
+    .accent{color:var(--terracotta)}
+    .seaText{color:var(--sea)}
+  
+    .mapcard{overflow:hidden;padding:0}.maphead{padding:14px 15px 4px}.mapwrap{position:relative;background:#eaf4f1;min-height:300px;border-top:1px solid var(--line)}
+    .mapwrap svg{display:block;width:100%;height:300px}.legend{display:flex;gap:9px;flex-wrap:wrap;padding:9px 13px;background:#fffdf7;border-top:1px solid var(--line);font-size:.74rem}
+    .poi-list{padding:0 14px 13px}.poi-row{display:grid;grid-template-columns:28px 1fr;gap:7px;margin:8px 0}.ico{width:27px;height:27px;border-radius:8px;display:grid;place-items:center;background:var(--soft)}
+    .mapnote{font-size:.74rem;color:var(--muted);padding:0 14px 12px}.mapbuttons{padding:0 14px 12px}
+    .modal{position:fixed;z-index:100;inset:0;background:#10251fbb;display:grid;place-items:center;padding:14px}.modalbox{background:var(--paper);width:min(760px,100%);max-height:92vh;overflow:auto;border-radius:20px;box-shadow:0 18px 60px #0005;padding:16px}
+    .modalhead{display:flex;justify-content:space-between;align-items:center;gap:8px}.timeline{position:relative;margin:18px 4px 6px;padding-left:32px}.timeline:before{content:"";position:absolute;left:10px;top:8px;bottom:8px;width:4px;background:linear-gradient(var(--gold),var(--sea),var(--terracotta));border-radius:8px}
+    .titem{position:relative;padding:0 0 18px 12px}.titem:before{content:"";position:absolute;left:-29px;top:3px;width:14px;height:14px;border-radius:50%;background:white;border:4px solid var(--sea)}.ttime{font-size:.77rem;color:var(--muted);font-weight:800}.ttitle{font-weight:900;margin-top:2px}.tdesc{font-size:.87rem;margin-top:3px;color:#44514a}
+    .routeband{margin:10px 0 14px;padding:11px;border-radius:13px;background:linear-gradient(90deg,var(--olive),var(--sea));color:white;font-weight:800}.doclinks{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap;padding-top:8px;border-top:1px dashed var(--line)}
+
+    .installbox{margin:12px 0 18px;padding:14px;border-radius:16px;background:linear-gradient(135deg,#fffdf7,#eef8f3);border:1px solid var(--line);box-shadow:var(--shadow)}
+    .installrow{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+    .installtitle{font-weight:900}
+    .netchip{position:fixed;z-index:60;right:10px;bottom:88px;padding:7px 10px;border-radius:999px;font-size:.75rem;font-weight:800;box-shadow:var(--shadow);background:#eef8f3;color:#214f3d;border:1px solid #cae6d8}
+    .netchip.offline{background:#fff0ec;color:#7f3428;border-color:#edcbc0}
+    .install-help{font-size:.82rem;color:var(--muted);margin-top:8px}
+
+  </style>
+</head>
+<body>
+<div class="app">
+  <header class="hero">
+    <div class="eyebrow">Viaje familiar · Italia</div>
+    <h1>Cinque Terre 2026</h1>
+    <div class="sub">Madrid · La Spezia · 13–19 agosto</div>
+    <div class="nowcard" id="nowCard"></div>
+  </header>
+
+  <main>
+    <section id="homeView">
+      <div id="installBox" class="installbox">
+        <div class="installrow">
+          <div>
+            <div class="small">ANDROID · PWA</div>
+            <div class="installtitle">Instalar Cinque Terre en el móvil</div>
+            <div class="install-help" id="installHelp">Abre esta app desde una dirección HTTPS en Chrome para poder instalarla.</div>
+          </div>
+          <button id="installBtn" class="sea" style="display:none" onclick="installPWA()">📲 Instalar app</button>
+        </div>
+      </div>
+      <div class="section">
+        <h2>Días del viaje</h2>
+        <div class="grid-days" id="daysGrid"></div>
+      </div>
+
+      <div class="section cols two">
+        <div class="card">
+          <h2>Resumen rápido</h2>
+          <div class="metric"><span>Ya pagado</span><span class="paid money" id="homePaid"></span></div>
+          <div class="metric"><span>Gastos añadidos</span><span class="money" id="homeAdded"></span></div>
+          <div class="metric"><span>Total registrado</span><span class="money" id="homeTotal"></span></div>
+        </div>
+        <div class="card">
+          <h2>Imprescindibles</h2>
+          <ul class="clean">
+            <li>Monterosso: baño + snorkel.</li>
+            <li>Vernazza: mirador clásico.</li>
+            <li>Manarola: fotos al final de la tarde.</li>
+            <li>Porto Venere: San Pietro y frente marítimo.</li>
+            <li>Pisa: Piazza dei Miracoli.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="dayView" class="hidden">
+      <div class="toolbar">
+        <button class="secondary" onclick="showView('home')">← Volver</button>
+        <button class="sea" onclick="cycleDay(-1)">Día anterior</button>
+        <button class="sea" onclick="cycleDay(1)">Día siguiente</button>
+      </div>
+      <div id="dayContent"></div>
+    </section>
+
+    <section id="budgetView" class="hidden">
+      <div class="section">
+        <div class="card">
+          <div class="small">Total registrado</div>
+          <div class="budget-big money" id="budgetTotal"></div>
+          <div class="metric"><span>Pagado antes del viaje</span><span class="paid money" id="budgetPaid"></span></div>
+          <div class="metric"><span>Gastado durante el viaje</span><span class="money" id="budgetAdded"></span></div>
+          <div class="metric"><span>Presupuesto objetivo</span><span class="money">3.700,00 €</span></div>
+          <div class="metric"><span>Margen restante</span><span class="money" id="budgetRemaining"></span></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Añadir gasto</h2>
+        <div class="card">
+          <div class="expense-form">
+            <input id="expDesc" class="wide" placeholder="Ej. Cena en Vernazza"/>
+            <input id="expAmount" type="number" inputmode="decimal" step="0.01" placeholder="Importe €"/>
+            <select id="expCat">
+              <option>Comida</option><option>Transporte</option><option>Entradas</option>
+              <option>Compras</option><option>Helados/snacks</option><option>Otros</option>
+            </select>
+            <select id="expDay">
+              <option value="13">13 agosto</option><option value="14">14 agosto</option>
+              <option value="15">15 agosto</option><option value="16">16 agosto</option>
+              <option value="17">17 agosto</option><option value="18">18 agosto</option>
+              <option value="19">19 agosto</option>
+            </select>
+            <button onclick="addExpense()">Añadir gasto</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Gastos cerrados</h2>
+        <div class="card"><table><thead><tr><th>Concepto</th><th>Importe</th></tr></thead><tbody id="paidTable"></tbody></table></div>
+      </div>
+
+      <div class="section">
+        <h2>Gastos añadidos</h2>
+        <div class="card"><table><thead><tr><th>Día</th><th>Concepto</th><th>Categoría</th><th>Importe</th><th></th></tr></thead><tbody id="expensesTable"></tbody></table></div>
+      </div>
+    </section>
+
+    <section id="reservationsView" class="hidden">
+      <div class="section">
+        <h2>Reservas</h2>
+        <div class="notice ok">La app muestra los datos esenciales de las reservas. Los documentos originales se llevarán en papel y no se guardan dentro de la aplicación.</div>
+        <div id="reservationsList"></div>
+      </div>
+    </section>
+
+    <section id="moreView" class="hidden">
+      <div class="section">
+        <div class="card">
+          <h2>Hotel base</h2>
+          <p><strong>Albergo delle Spezie</strong><br/>Via Felice Cavallotti 31<br/>19121 La Spezia, Italy</p>
+          <button class="secondary" onclick="openMap('Albergo delle Spezie Via Felice Cavallotti 31 La Spezia')">Abrir mapa</button>
+        </div>
+        <div class="card">
+          <h2>Modo offline</h2>
+          <p>El itinerario, reservas y presupuesto quedan guardados en este dispositivo. Los mapas y webs externas necesitan Internet.</p>
+          <div class="notice ok">Consejo: abre la app una vez con conexión antes del viaje para que el navegador guarde los archivos.</div>
+        </div>
+        
+        <div class="card">
+          <h2>Instalar en Android</h2>
+          <p><strong>Chrome:</strong> abre la URL HTTPS de la app. Si aparece el botón <em>Instalar app</em> en Inicio, púlsalo. También puedes usar ⋮ → <strong>Instalar aplicación</strong> / <strong>Añadir a pantalla de inicio</strong>.</p>
+          <div class="notice ok">Después de instalarla, ábrela una vez con Internet. El itinerario y las infografías quedarán disponibles offline.</div>
+          <p class="small">Importante: abrir directamente <code>index.html</code> como archivo no permite una instalación PWA fiable.</p>
+        </div>
+
+        <div class="card">
+          <h2>Notas rápidas</h2>
+          <textarea id="notes" style="width:100%;min-height:140px;border:1px solid var(--line);border-radius:12px;padding:10px;background:white" placeholder="Anota aquí cualquier cosa..."></textarea>
+          <button style="margin-top:8px" onclick="saveNotes()">Guardar notas</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+
+<div id="timelineModal" class="modal hidden" onclick="if(event.target===this)closeTimeline()"><div class="modalbox"><div class="modalhead"><h2 id="timelineTitle" style="margin:0">Línea del tiempo</h2><button class="secondary" onclick="closeTimeline()">✕</button></div><div id="timelineBody"></div></div></div>
+<div id="netChip" class="netchip">● Con conexión</div>
+
+<nav class="tabs">
+  <div class="tabin">
+    <button class="tab active" id="tab-home" onclick="showView('home')">🏠<br/>Inicio</button>
+    <button class="tab" id="tab-budget" onclick="showView('budget')">💶<br/>Gastos</button>
+    <button class="tab" id="tab-reservations" onclick="showView('reservations')">🎟️<br/>Reservas</button>
+    <button class="tab" id="tab-more" onclick="showView('more')">☰<br/>Más</button>
+  </div>
+</nav>
+
+<script>
+const trip = {
+  budgetGoal: 3700,
+  paid: [
+    ["Vuelos Madrid–Malpensa / Bérgamo–Madrid",553.70],
+    ["Hotel Albergo delle Spezie",1187.80],
+    ["Parking Barajas",81.70],
+    ["Malpensa Express (ida, 4 personas)",36.00],
+    ["Trenes Milán–La Spezia–Milán",113.34],
+    ["Bus Milano Centrale–Aeropuerto Bérgamo",19.20],
+    ["Barco 17 agosto · Porto Venere/Palmaria + snorkel",260.00]
+  ],
+  days: [
+    {
+      d:13, title:"Llegada a La Spezia", subtitle:"Madrid · Malpensa · Milán · La Spezia",
+      morning:{
+        title:"Viaje Madrid → Malpensa", time:"Mañana",
+        transport:"Coche + avión + Malpensa Express",
+        ticket:"Parking reservado + vuelos + Malpensa Express ya pagado",
+        places:["Aeropuerto Madrid-Barajas","Aeropuerto Milano Malpensa","Milano Centrale"],
+        plan:["Salida muy temprana hacia Barajas.","Vuelo directo a Malpensa.","Malpensa Express hasta Milano Centrale.","Comida/snack antes del tren."],
+        carry:["Documentación","Billetes offline","Agua","Entretenimiento para niños"],
+        effort:"🟢 Fácil, pero día largo"
+      },
+      afternoon:{
+        title:"Milano Centrale → La Spezia", time:"12:50–17:22",
+        transport:"Tren",
+        ticket:"Billete ya pagado",
+        places:["Milano Centrale","La Spezia Centrale","Albergo delle Spezie"],
+        plan:["12:50 salida Milano Centrale.","17:22 llegada La Spezia.","Check-in y descanso."],
+        effort:"🟢 Fácil"
+      },
+      night:{
+        title:"Libre en La Spezia", time:"Noche",
+        places:["Via del Prione","Paseo del puerto"],
+        plan:["Paseo corto.","Cena cerca del hotel.","Acostarse pronto."],
+        suggestions:["Helado por el centro","Paseo hasta Porto Mirabello"],
+        effort:"🟢 Muy suave"
+      }
+    },
+    {
+      d:14, title:"Monterosso + Porto Venere", subtitle:"Día de ferry, playa y costa",
+      morning:{
+        title:"Ferry a Monterosso + playa", time:"09:15–13:30",
+        transport:"Ferry",
+        ticket:"Giornaliero Cinque Terre (pendiente de compra)",
+        places:["Passeggiata Morin · La Spezia","Monterosso al Mare"],
+        plan:["09:15 ferry desde La Spezia.","11:30 llegada a Monterosso.","11:40–13:10 baño y snorkel (máx. 1 h 30).","13:10–13:30 cambio y recoger."],
+        swim:"Playa de Monterosso/Fegina. Es la mejor jornada para un baño largo.",
+        photos:["Estatua del Gigante / Fegina","Vista hacia el casco antiguo desde el paseo marítimo"],
+        carry:["Bañador puesto","Escarpines","Máscara de snorkel","Toalla ligera","Protector solar","Agua"],
+        effort:"🟢 Familiar"
+      },
+      afternoon:{
+        title:"Comida + Porto Venere", time:"13:30–19:30",
+        transport:"Ferry",
+        ticket:"Mismo billete diario del ferry",
+        places:["Monterosso","Porto Venere","Iglesia de San Pietro","Grotta di Byron (mirador)"],
+        plan:["13:30–14:50 comida en Monterosso.","15:25 ferry hacia Porto Venere.","16:50 llegada.","Visita del frente marítimo, caruggio y San Pietro.","19:00 ferry a La Spezia.","19:30 llegada."],
+        food:[
+          "Rápido/económico: focaccia o fritto misto cerca de la estación/puerto.",
+          "Familiar: trattoria con pasta al pesto y pescado sencillo.",
+          "Especial: mesa con vistas al mar, evitando primera línea si el precio se dispara."
+        ],
+        photos:["Iglesia de San Pietro desde el promontorio","Frente de casas de colores de Porto Venere","Vista hacia Palmaria"],
+        effort:"🟠 Día largo pero variado"
+      },
+      night:{
+        title:"Libre en La Spezia", time:"Desde 20:00",
+        places:["Centro de La Spezia"],
+        plan:["Cena tranquila.","Paseo corto si quedan fuerzas."],
+        suggestions:["Via del Prione","Helado","Puerto"],
+        effort:"🟢"
+      }
+    },
+    {
+      d:15, title:"Vernazza + Corniglia", subtitle:"Cinque Terre norte",
+      morning:{
+        title:"Vernazza", time:"Mañana",
+        transport:"Tren regional",
+        ticket:"Cinque Terre Treno MS Card familiar · día 1 de 2 (pendiente)",
+        places:["Vernazza","Piazza Marconi","Puerto","Santa Margherita d'Antiochia","Mirador hacia Monterosso"],
+        plan:["Tren desde La Spezia a Vernazza.","Recorrer Via Roma hasta el puerto.","Subida corta al mirador, sin hacer el sendero completo.","Baño opcional máximo 30 min si el mar está tranquilo."],
+        swim:"Puerto de Vernazza: baño breve, solo con poco oleaje y afluencia razonable.",
+        photos:["Mirador del sendero hacia Monterosso","Puerto desde Piazza Marconi"],
+        food:[
+          "Rápido: focaccia / pizza al taglio.",
+          "Familiar: trattoria con pasta y pesto.",
+          "Especial: terraza con vistas, si hay disponibilidad."
+        ],
+        carry:["Cinque Terre Card","Bañador","Escarpines","Toalla","Agua","Gorra"],
+        effort:"🟠 Escaleras en el mirador"
+      },
+      afternoon:{
+        title:"Corniglia", time:"Tarde",
+        transport:"Tren + bus del parque",
+        ticket:"Misma Cinque Terre Card",
+        places:["Corniglia","Via Fieschi","Largo Taragio","Mirador de Santa Maria"],
+        plan:["Tren Vernazza → Corniglia.","Usar el bus del parque para evitar la Lardarina con los niños.","Paseo tranquilo y miradores.","Regreso en tren a La Spezia."],
+        photos:["Terrazza di Santa Maria","Calles interiores de Corniglia"],
+        effort:"🟢 usando el bus"
+      },
+      night:{
+        title:"Libre en La Spezia", time:"Noche",
+        places:["Centro","Puerto"],
+        plan:["Cena y descanso."],
+        suggestions:["Paseo corto por el puerto","Helado","Preparar mochila del día Luca"],
+        effort:"🟢"
+      }
+    },
+    {
+      d:16, title:"Riomaggiore + Manarola", subtitle:"Día Luca",
+      morning:{
+        title:"Riomaggiore", time:"Mañana",
+        transport:"Tren regional",
+        ticket:"Cinque Terre Treno MS Card familiar · día 2 de 2",
+        places:["Via Colombo","Puerto de Riomaggiore","Zona de barcas"],
+        plan:["Tren La Spezia → Riomaggiore.","Paseo por Via Colombo y puerto.","Tiempo para fotos y ambiente marinero.","Comida antes de ir a Manarola."],
+        photos:["Puerto desde las rocas seguras","Casas de colores sobre la rampa de barcas"],
+        food:[
+          "Rápido: fritto misto en cono / focaccia.",
+          "Familiar: pasta al pesto o pizza.",
+          "Especial: terraza alta con vistas al puerto."
+        ],
+        effort:"🟠 Pendientes y escaleras"
+      },
+      afternoon:{
+        title:"Manarola", time:"Tarde",
+        transport:"Tren o Via dell’Amore si está abierta y reservada",
+        ticket:"Cinque Terre Card + reserva específica si se usa Via dell’Amore",
+        places:["Puerto de Manarola","Paseo panorámico","Mirador clásico"],
+        plan:["Traslado desde Riomaggiore.","Baño opcional máximo 30 min si el mar está tranquilo.","Paseo y helado.","Final de la tarde en el mirador.","Tren de regreso a La Spezia."],
+        swim:"Marina de Manarola: acceso desde roca/escalera, agua profunda. Solo con mar tranquilo y vigilancia cercana.",
+        photos:["Mirador clásico de Manarola","Puerto y casas de colores","Luz de última hora"],
+        carry:["Bañador","Escarpines","Toalla","Agua","Protector solar"],
+        effort:"🟠 Más exigente que Monterosso"
+      },
+      night:{
+        title:"Libre en La Spezia", time:"Noche",
+        places:["Centro de La Spezia"],
+        plan:["Cena tranquila y descanso."],
+        suggestions:["Cena sin prisas","Revisar punto de encuentro del barco del día 17"],
+        effort:"🟢"
+      }
+    },
+    {
+      d:17, title:"Barco + snorkel", subtitle:"Porto Venere y Palmaria",
+      morning:{
+        title:"Paseo en barco + esnórquel", time:"10:30–14:00/14:30 aprox.",
+        transport:"A pie hasta Porto Mirabello + barco",
+        ticket:"Actividad ya pagada · 260 €",
+        places:["La Spezia / Porto Mirabello","Porto Venere desde el mar","Palmaria","Tino","Tinetto"],
+        plan:["Llegar al punto de encuentro sobre las 10:00.","10:30 salida.","Navegación por Porto Venere y las islas.","Paradas de baño y snorkel.","Aperitivo/bebidas según reserva.","Regreso a La Spezia."],
+        swim:"Paradas de snorkel incluidas en la excursión. Seguir indicaciones del patrón.",
+        photos:["Torre Scola desde el mar","Acantilados de Palmaria","Porto Venere desde el agua"],
+        carry:["Bañador","Protector solar","Toalla","Gorra","Funda estanca móvil"],
+        effort:"🟢 Actividad guiada"
+      },
+      afternoon:{
+        title:"Libre en La Spezia", time:"Desde 15:00",
+        places:["Albergo delle Spezie","Porto Mirabello","Centro"],
+        plan:["Comida tardía si hace falta.","Descanso en el hotel.","Paseo suave por el puerto."],
+        suggestions:["Museo Técnico Naval si apetece interior","Compras","Helado"],
+        effort:"🟢"
+      },
+      night:{
+        title:"Libre en La Spezia", time:"Noche",
+        plan:["Cena tranquila.","No alargar demasiado: al día siguiente Pisa."],
+        suggestions:["Via del Prione","Cena cerca del hotel"],
+        effort:"🟢"
+      }
+    },
+    {
+      d:18, title:"Pisa por la mañana", subtitle:"Piazza dei Miracoli + tarde en La Spezia",
+      morning:{
+        title:"Excursión a Pisa", time:"08:00–14:30 aprox.",
+        transport:"Tren + bus urbano/taxi corto",
+        ticket:"Tren La Spezia–Pisa ida/vuelta + entradas (pendiente)",
+        places:["Pisa Centrale","Piazza dei Miracoli","Torre de Pisa (exterior)","Catedral","Baptisterio","Camposanto opcional"],
+        plan:["Tren temprano a Pisa.","Ir directo a Piazza dei Miracoli.","Fotos y paseo por la plaza.","Visita Catedral + Baptisterio.","Camposanto solo si los niños están bien.","No subir a la Torre: el menor de 6 años no puede y no merece separar a la familia.","Comer en Pisa y regresar después."],
+        photos:["Torre desde el césped de Piazza dei Miracoli","Catedral + Torre en el mismo encuadre","Foto familiar clásica con perspectiva"],
+        food:[
+          "Rápido: pizza al taglio/panino cerca de la plaza.",
+          "Familiar: trattoria sencilla fuera de la primera línea turística.",
+          "Especial: restaurante toscano con pasta/ragù, siempre controlando tiempos."
+        ],
+        carry:["Entradas","Agua","Gorra","Protector solar","Billetes de tren"],
+        effort:"🟢 Visita concentrada"
+      },
+      afternoon:{
+        title:"Libre en La Spezia", time:"Desde 16:00 aprox.",
+        places:["Centro","Puerto","Hotel"],
+        plan:["Paseo sin objetivos.","Últimas compras.","Preparar maletas."],
+        suggestions:["Museo Técnico Naval si no se visitó","Helado","Paseo por Porto Mirabello"],
+        effort:"🟢"
+      },
+      night:{
+        title:"Cena temprana + preparar salida", time:"Noche",
+        plan:["Cena temprana.","Dejar documentación y billetes preparados.","Acostarse pronto: tren 07:38."],
+        effort:"🟢"
+      }
+    },
+    {
+      d:19, title:"Regreso a Madrid", subtitle:"La Spezia · Milán · Bérgamo · Madrid",
+      morning:{
+        title:"La Spezia → Milano Centrale", time:"07:38–11:55",
+        transport:"Tren",
+        ticket:"Billete ya pagado",
+        places:["La Spezia Centrale","Milano Centrale"],
+        plan:["Check-out temprano.","07:38 salida.","11:55 llegada Milano Centrale."],
+        effort:"🟢"
+      },
+      afternoon:{
+        title:"Milán → Bérgamo Airport", time:"12:35",
+        transport:"Bus directo",
+        ticket:"4 billetes ya pagados · 19,20 €",
+        places:["Milano Centrale","Aeroporto di Bergamo-Orio al Serio"],
+        plan:["12:35 salida del bus.","Llegada con margen amplio.","17:50 vuelo a Madrid."],
+        carry:["Documentación","Tarjetas de embarque offline","Agua/snacks para niños"],
+        effort:"🟢"
+      },
+      night:{
+        title:"Madrid", time:"Noche",
+        plan:["Recoger coche en Barajas y regreso a casa."],
+        effort:"🟢"
+      }
+    }
+  ]
+};
+
+const reservations = [
+  {title:"Vuelos", meta:"Madrid → Malpensa / Bérgamo → Madrid", amount:553.70, status:"Pagado"},
+  {title:"Hotel", meta:"Albergo delle Spezie · Via Felice Cavallotti 31", amount:1187.80, status:"Pagado"},
+  {title:"Parking Barajas", meta:"13–19 agosto", amount:81.70, status:"Pagado"},
+  {title:"Malpensa Express", meta:"Malpensa → Milano Centrale · 4 personas", amount:36.00, status:"Pagado"},
+  {title:"Trenes larga distancia", meta:"13 ago 12:50–17:22 / 19 ago 07:38–11:55", amount:113.34, status:"Pagado"},
+  {title:"Bus a Bérgamo", meta:"19 ago · salida Milano Centrale 12:35", amount:19.20, status:"Pagado"},
+  {title:"Barco 17 agosto", meta:"La Spezia → Porto Venere/Palmaria + snorkel · 10:30", amount:260.00, status:"Pagado"}
+];
+
+const euro = n => new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR'}).format(n);
+const paidTotal = () => trip.paid.reduce((a,b)=>a+b[1],0);
+
+function getExpenses(){ try{return JSON.parse(localStorage.getItem('ct_expenses')||'[]')}catch(e){return[]} }
+function setExpenses(x){localStorage.setItem('ct_expenses',JSON.stringify(x))}
+function addedTotal(){return getExpenses().reduce((s,e)=>s+Number(e.amount||0),0)}
+
+function renderNow(){
+  const box=document.getElementById('nowCard');
+  const now=new Date();
+  const y=now.getFullYear(), m=now.getMonth()+1, d=now.getDate();
+  let msg='', detail='', pill='Plan del viaje';
+  if(y===2026 && m===8 && d>=13 && d<=19){
+    const day=trip.days.find(x=>x.d===d);
+    const h=now.getHours();
+    let phase=h<13?'morning':h<19?'afternoon':'night';
+    const act=day[phase];
+    msg=`Hoy · ${d} de agosto`;
+    detail=`${act.title}${act.time ? ' · '+act.time : ''}`;
+    pill='En viaje';
+  } else if(new Date(2026,7,13)>now){
+    const diff=Math.ceil((new Date(2026,7,13)-now)/86400000);
+    msg=`Faltan ${diff} días`;
+    detail='Próximo: salida de Madrid hacia Malpensa';
+  } else {
+    msg='Viaje Cinque Terre 2026';
+    detail='Consulta el itinerario por días';
+  }
+  box.innerHTML=`<div class="nowrow"><div><div class="nowtitle">${msg}</div><div style="margin-top:5px;opacity:.92">${detail}</div></div><span class="pill">● ${pill}</span></div>`;
+}
+
+function renderDays(){
+  document.getElementById('daysGrid').innerHTML=trip.days.map(x=>`
+  <div class="daycard" onclick="openDay(${x.d})">
+    <div class="daynum">${x.d} agosto</div>
+    <div class="daytitle">${x.title}</div>
+    <div class="tiny">${x.subtitle}</div>
+  </div>`).join('');
+}
+
+function renderActivity(label,a,cls){
+  if(!a) return '';
+  const list=(name,items)=>{
+    if(!items||!items.length)return '';
+    return `<div><strong>${name}</strong><ul class="clean">${items.map(i=>`<li>${i}</li>`).join('')}</ul></div>`
+  };
+  return `<div class="card activity ${cls}">
+    <div class="acthead"><div><div class="small">${label}</div><div class="acttime">${a.title}</div></div><span class="tag">${a.time||''}</span></div>
+    ${a.transport?`<p><strong>Cómo llegar:</strong> ${a.transport}</p>`:''}
+    ${a.ticket?`<p><strong>Billete/tarjeta:</strong> ${a.ticket}</p>`:''}
+    ${list('Plan',a.plan)}
+    ${list('Sitios',a.places)}
+    ${a.swim?`<div class="notice ok"><strong>Baño:</strong> ${a.swim}</div>`:''}
+    ${list('Mejores fotos',a.photos)}
+    ${a.food?`<div style="margin-top:8px"><strong>Comida recomendada</strong><ul class="clean">${a.food.map(i=>`<li>${i}</li>`).join('')}</ul></div>`:''}
+    ${list('Llevar',a.carry)}
+    ${list('Si queda tiempo',a.suggestions)}
+    ${a.effort?`<p class="small"><strong>Esfuerzo:</strong> ${a.effort}</p>`:''}
+  </div>`
+}
+
+let currentDay=14;
+function openDay(d){
+  currentDay=d;
+  const day=trip.days.find(x=>x.d===d);
+  document.getElementById('dayContent').innerHTML=`
+    <div class="section"><h2>${d} de agosto · ${day.title}</h2><div class="small">${day.subtitle}</div>
+      ${renderActivity('MAÑANA',day.morning,'morning')}
+      ${renderActivity('TARDE',day.afternoon,'afternoon')}
+      ${renderActivity('NOCHE',day.night,'night')}
+      <div class="card">
+        <h2>Accesos rápidos</h2>
+        <div class="toolbar">
+          <button class="secondary" onclick="openMap('${encodeURIComponent(day.title+" Cinque Terre Italy")}')">🗺 Abrir mapa</button>
+          <button class="secondary" onclick="showView('budget')">💶 Añadir gasto</button>
+        </div>
+      </div>
+    </div>`;
+  showView('day');
+}
+
+function cycleDay(n){
+  const idx=trip.days.findIndex(x=>x.d===currentDay);
+  const j=Math.max(0,Math.min(trip.days.length-1,idx+n));
+  openDay(trip.days[j].d);
+}
+
+function showView(v){
+  ['home','day','budget','reservations','more'].forEach(x=>{
+    document.getElementById(x+'View').classList.toggle('hidden',x!==v);
+    const tab=document.getElementById('tab-'+x);
+    if(tab) tab.classList.toggle('active',x===v);
+  });
+  if(v==='budget') renderBudget();
+  if(v==='reservations') renderReservations();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function renderBudget(){
+  const p=paidTotal(), a=addedTotal(), total=p+a;
+  document.getElementById('budgetPaid').textContent=euro(p);
+  document.getElementById('budgetAdded').textContent=euro(a);
+  document.getElementById('budgetTotal').textContent=euro(total);
+  document.getElementById('budgetRemaining').textContent=euro(trip.budgetGoal-total);
+  document.getElementById('paidTable').innerHTML=trip.paid.map(x=>`<tr><td>${x[0]}</td><td class="money">${euro(x[1])}</td></tr>`).join('');
+  const ex=getExpenses();
+  document.getElementById('expensesTable').innerHTML=ex.length?ex.map((e,i)=>`<tr><td>${e.day}</td><td>${e.desc}</td><td>${e.cat}</td><td>${euro(Number(e.amount))}</td><td><button class="secondary" onclick="delExpense(${i})">×</button></td></tr>`).join(''):`<tr><td colspan="5" class="small">Todavía no has añadido gastos.</td></tr>`;
+  updateHomeBudget();
+}
+
+function addExpense(){
+  const desc=document.getElementById('expDesc').value.trim();
+  const amount=Number(document.getElementById('expAmount').value);
+  if(!desc || !amount) return alert('Añade concepto e importe.');
+  const ex=getExpenses();
+  ex.push({desc,amount,cat:document.getElementById('expCat').value,day:document.getElementById('expDay').value});
+  setExpenses(ex);
+  document.getElementById('expDesc').value='';
+  document.getElementById('expAmount').value='';
+  renderBudget();
+}
+
+function delExpense(i){
+  const ex=getExpenses(); ex.splice(i,1); setExpenses(ex); renderBudget();
+}
+
+function renderReservations(){
+  document.getElementById('reservationsList').innerHTML=reservations.map(r=>`
+    <div class="card reserve">
+      <div><div><span class="statusdot"></span> <strong>${r.title}</strong></div><div class="small" style="margin-top:4px">${r.meta}</div></div>
+      <div style="text-align:right"><div class="paid">${r.status}</div><div class="money">${euro(r.amount)}</div></div>
+    </div>`).join('');
+}
+
+function updateHomeBudget(){
+  const p=paidTotal(), a=addedTotal();
+  document.getElementById('homePaid').textContent=euro(p);
+  document.getElementById('homeAdded').textContent=euro(a);
+  document.getElementById('homeTotal').textContent=euro(p+a);
+}
+
+function openMap(q){
+  const s=decodeURIComponent(q);
+  window.open('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(s),'_blank');
+}
+function saveNotes(){localStorage.setItem('ct_notes',document.getElementById('notes').value); alert('Notas guardadas en este dispositivo.')}
+function loadNotes(){document.getElementById('notes').value=localStorage.getItem('ct_notes')||''}
+
+renderNow(); renderDays(); updateHomeBudget(); renderReservations(); loadNotes();
+
+let deferredInstallPrompt=null;
+const installBtn=document.getElementById('installBtn');
+const installHelp=document.getElementById('installHelp');
+const installBox=document.getElementById('installBox');
+
+function isStandalone(){
+  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone===true;
+}
+function refreshInstallUI(){
+  if(isStandalone()){
+    if(installHelp) installHelp.textContent='La app ya está instalada en este dispositivo.';
+    if(installBtn) installBtn.style.display='none';
+  }
+}
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();
+  deferredInstallPrompt=e;
+  if(installBtn) installBtn.style.display='inline-block';
+  if(installHelp) installHelp.textContent='Lista para instalar. Funcionará como una app independiente y conservará tus gastos en este móvil.';
+});
+async function installPWA(){
+  if(!deferredInstallPrompt){
+    alert('Si Chrome no muestra instalación automática, usa el menú ⋮ y elige “Instalar aplicación” o “Añadir a pantalla de inicio”.');
+    return;
+  }
+  deferredInstallPrompt.prompt();
+  await deferredInstallPrompt.userChoice;
+  deferredInstallPrompt=null;
+  if(installBtn) installBtn.style.display='none';
+}
+window.addEventListener('appinstalled',()=>{
+  if(installHelp) installHelp.textContent='Instalada correctamente. Ya puedes abrirla desde la pantalla de inicio.';
+  if(installBtn) installBtn.style.display='none';
+});
+
+function updateNetworkBadge(){
+  const chip=document.getElementById('netChip');
+  if(!chip) return;
+  const on=navigator.onLine;
+  chip.textContent=on?'● Con conexión':'● Modo offline';
+  chip.classList.toggle('offline',!on);
+}
+window.addEventListener('online',updateNetworkBadge);
+window.addEventListener('offline',updateNetworkBadge);
+updateNetworkBadge();
+refreshInstallUI();
+
+if('serviceWorker' in navigator){
+  window.addEventListener('load',async()=>{
+    try{
+      const reg=await navigator.serviceWorker.register('./sw.js',{scope:'./'});
+      reg.update().catch(()=>{});
+    }catch(e){}
+  });
+}
+
+
+const startupParams=new URLSearchParams(location.search);
+window.addEventListener('load',()=>{
+  const v=startupParams.get('view');
+  if(v==='budget') showView('budget');
+  if(v==='today'){
+    const n=new Date();
+    if(n.getFullYear()===2026 && n.getMonth()===7 && n.getDate()>=13 && n.getDate()<=19) openDay(n.getDate());
+  }
+});
+
+</script>
+<script>
+// --- V2: documentos, mapas offline y líneas del tiempo ---
+reservations.splice(0,reservations.length,
+ {title:"Vuelos Ryanair",meta:"FR2753 · 13/08 06:10 MAD→MXP (08:20) · FR5494 · 19/08 17:50 BGY→MAD (20:15) · Localizador GTCYQL",amount:553.70,status:"Pagado"},
+ {title:"Hotel Albergo delle Spezie",meta:"13–19 agosto · 6 noches · desayuno incluido · confirmación 6046.984.732",amount:1187.80,status:"Pagado"},
+ {title:"Parking Barajas T123",meta:"13/08 04:00 → 19/08 21:30 · localizador 1TJRO",amount:81.70,status:"Pagado"},
+ {title:"Malpensa Express",meta:"Malpensa → Milano Centrale · 4 personas",amount:36,status:"Pagado",note:"La documentación se llevará en papel."},
+ {title:"Trenes Milán–La Spezia–Milán",meta:"13/08 12:50–17:22 · 19/08 07:38–11:55",amount:113.34,status:"Pagado",note:"La documentación se llevará en papel."},
+ {title:"Bus Milano Centrale → Bérgamo",meta:"19/08 · salida 12:35 · 4 billetes",amount:19.20,status:"Pagado",note:"La documentación se llevará en papel."},
+ {title:"Barco Nord Est La Spezia",meta:"17/08 · 10:30 · 4 h · Porto Mirabello · pedido P-338481237",amount:260,status:"Pagado",note:"Reserva registrada en la app; la documentación se llevará en papel."}
+);
+
+const timelineDB={
+13:[["04:00","Parking Barajas","Entrada Larga Estancia T123."],["06:10","Vuelo FR2753","Madrid → Malpensa; llegada 08:20."],["Mañana","Malpensa Express","Aeropuerto → Milano Centrale."],["12:50","Tren a La Spezia","Llegada 17:22."],["17:30","Hotel","Check-in y descanso."],["Noche","Libre en La Spezia","Cena y paseo corto."]],
+14:[["08:40","Embarcadero","Passeggiata Morin."],["09:15","Ferry","La Spezia → Monterosso."],["11:30","Monterosso","Llegada."],["11:40–13:10","Baño + snorkel","Máximo 1 h 30 en Fegina."],["13:30–14:50","Comida","Monterosso."],["15:25","Ferry","Monterosso → Porto Venere."],["16:50–18:45","Porto Venere","San Pietro, caruggio y miradores."],["19:00","Ferry","Regreso; llegada La Spezia 19:30."],["Noche","Libre en La Spezia","Cena tranquila."]],
+15:[["08:45","La Spezia Centrale","Ir a la estación."],["09:15 aprox.","Tren a Vernazza","Cinque Terre Card."],["09:45–12:15","Vernazza","Puerto, iglesia y mirador."],["Opcional","Baño rápido","Máximo 30 min si el mar está tranquilo."],["12:30–13:45","Comida","Vernazza."],["14:15 aprox.","Tren a Corniglia","Trayecto corto."],["14:30–18:00","Corniglia","Bus del parque, centro y mirador."],["18:30 aprox.","Regreso","Tren a La Spezia."]],
+16:[["09:30 aprox.","Tren","La Spezia → Riomaggiore."],["09:45–12:45","Riomaggiore","Via Colombo, puerto y fotos."],["12:45–14:00","Comida","Riomaggiore."],["14:15 aprox.","Traslado","Tren o Via dell'Amore si hay reserva."],["15:00–17:00","Manarola","Puerto + baño opcional máx. 30 min."],["17:00–19:30","Manarola","Paseo y mirador."],["20:00 aprox.","Regreso","Tren a La Spezia."]],
+17:[["08:30","Desayuno","Hotel."],["09:45","Porto Mirabello","Ir andando."],["10:00","Check-in","Estar con margen."],["10:30","Salida del barco","Nord Est La Spezia."],["10:30–14:30","Navegación","Porto Venere/Palmaria/Tino/Tinetto, snorkel."],["15:00","La Spezia","Comida tardía o descanso."],["Tarde","Libre en La Spezia","Puerto, museo o compras."]],
+18:[["07:30","Desayuno","Hotel."],["08:15 aprox.","Tren a Pisa","Directo cuando sea posible."],["09:30","Piazza dei Miracoli","Llegada a la zona monumental."],["10:00–12:15","Visita esencial","Torre exterior, Catedral y Baptisterio."],["12:30–13:45","Comida","Pisa."],["14:30 aprox.","Regreso","Tren a La Spezia."],["16:00","Libre en La Spezia","Compras, paseo y maletas."]],
+19:[["06:30","Despertar","Check-out."],["07:38","Tren","La Spezia → Milano Centrale."],["11:55","Milán","Llegada."],["12:35","Bus a Bérgamo","Billete ya comprado."],["17:50","Vuelo FR5494","BGY → MAD."],["20:15","Madrid","Llegada."],["21:30","Parking","Reserva hasta esta hora."]]
+};
+const cityByDay={13:["La Spezia"],14:["Monterosso","Porto Venere","La Spezia"],15:["Vernazza","Corniglia","La Spezia"],16:["Riomaggiore","Manarola","La Spezia"],17:["La Spezia"],18:["Pisa","La Spezia"],19:[]};
+
+const infographicMaps={
+"Monterosso":"maps/monterosso_info.jpg",
+"Vernazza":"maps/vernazza_info.jpg",
+"Corniglia":"maps/corniglia_info.jpg",
+"Manarola":"maps/manarola_info.jpg",
+"Riomaggiore":"maps/riomaggiore_info.jpg",
+"Pisa":"maps/pisa_info.jpg"
+};
+
+const maps={
+"La Spezia":{sub:"Base del viaje",p:[["hotel","🏨","Albergo delle Spezie",47,54,"Hotel base"],["poi","⚓","Porto Mirabello",73,69,"Salida del barco del día 17"],["poi","🏛️","Museo Técnico Naval",55,67,"Buen plan interior"],["poi","🏰","Castello San Giorgio",38,28,"Mirador urbano"],["photo","📸","Ponte Thaon di Revel",67,60,"Mejor foto urbana/puerto"],["food","🍴","Fara Bistrot",49,50,"Muy cerca del hotel"],["food","🍴","La Pia Centenaria",40,46,"Pizza/farinata"],["food","🍴","Osteria da Bartali",56,42,"Cocina ligur y pescado"]]},
+"Monterosso":{sub:"Playa + comida",p:[["swim","🏊","Spiaggia di Fegina",24,66,"Zona de baño recomendada"],["photo","📸","Il Gigante / Fegina",13,56,"Foto icónica de playa"],["poi","⛪","San Giovanni Battista",67,42,"Iglesia"],["poi","🌊","Torre Aurora",53,58,"Paso panorámico"],["food","🍴","San Martino Gastronomia",71,51,"€ · informal"],["food","🍴","Da Eraldo",64,35,"€€ · muy valorado"],["food","🍴","Taverna Galin",74,61,"€€ · familiar"]]},
+"Porto Venere":{sub:"Puerto, San Pietro y miradores",p:[["poi","⛪","Chiesa di San Pietro",17,27,"Imprescindible"],["photo","📸","San Pietro / Grotta Byron",12,39,"Mejor foto del promontorio"],["poi","🏰","Castello Doria",35,22,"Fortaleza"],["poi","🏘️","Via Capellini",53,46,"Caruggio principal"],["swim","🏊","Spiaggia dell'Olivo",82,66,"Baño más cómodo"],["food","🍴","Osteria da Cesare",50,51,"€€"],["food","🍴","Porto 82",61,46,"€€ · pescado"],["food","🍴","L'Oasi Focacceria",84,58,"Focaccia"]]},
+"Vernazza":{sub:"Puerto y mirador",p:[["poi","⛪","Santa Margherita",50,58,"Junto al puerto"],["poi","🏰","Castello Doria",33,43,"Torre y vistas"],["photo","📸","Mirador hacia Monterosso",21,21,"Foto clásica"],["swim","🏊","Baño del puerto",55,73,"Solo mar tranquilo"],["food","🍴","Pippo a Vernazza",75,27,"€ · street food"],["food","🍴","Retro Bistrot",46,63,"€€"],["food","🍴","Ristorante Luca",58,57,"€€ · frente marítimo"]]},
+"Corniglia":{sub:"Miradores y calles altas",p:[["poi","⛪","Chiesa di San Pietro",70,23,"Entrada alta"],["poi","🏘️","Largo Taragio",49,47,"Centro"],["photo","📸","Terrazza di Santa Maria",28,51,"Mirador"],["swim","🏊","Marina di Corniglia",22,78,"Acceso exigente; no planificado"],["food","🍴","Marea",54,40,"€€"],["food","🍴","Andrea's Corniglia",35,59,"€ · panini"],["food","🍴","A Cantina da Mananan",61,48,"€€ · tradicional"]]},
+"Riomaggiore":{sub:"Puerto y ambiente Luca",p:[["poi","🏘️","Via Colombo",58,34,"Eje principal"],["poi","⛪","San Giovanni Battista",45,22,"Iglesia"],["photo","📸","Mirador del puerto",29,66,"Foto clásica"],["swim","🏊","Spiaggia di Riomaggiore",15,79,"Cala de piedras"],["food","🍴","Osteria La Torpedine",48,52,"€€"],["food","🍴","Old School",60,43,"€ · casual"],["food","🍴","Pizzeria Kepris",70,61,"€ · pizza"]]},
+"Manarola":{sub:"Marina + mejor foto",p:[["poi","⛪","San Lorenzo",62,24,"Iglesia"],["poi","⚓","Marina di Manarola",42,69,"Puerto"],["swim","🏊","Baño de la marina",34,78,"Agua profunda"],["photo","📸","Punta Bonfiglio",19,49,"Mejor vista"],["food","🍴","Nessun Dorma",20,40,"€€ · vistas"],["food","🍴","Trattoria dal Billy",59,42,"€€–€€€"],["food","🍴","Cappun Magru",68,31,"€–€€"]]},
+"Pisa":{sub:"Piazza dei Miracoli",p:[["poi","🗼","Torre de Pisa",48,37,"Exterior"],["poi","⛪","Catedral",52,49,"Imprescindible"],["poi","🏛️","Baptisterio",37,54,"Recomendado"],["poi","🏛️","Camposanto",57,27,"Opcional"],["photo","📸","Prato dei Miracoli",32,37,"Mejor foto familiar"],["food","🍴","Ristorante Pizzeria L'Europeo",60,65,"€ · familiar"],["food","🍴","Osteria 46",72,36,"€ · italiana"],["food","🍴","Ristoro Pecorino",56,72,"€€ · toscana"],["noswim","🚫","Sin zona de baño",79,79,"No hay baño previsto"]]}
+};
+function markerColor(t){return({food:"#c85b3c",photo:"#d1a54b",swim:"#2d7e9f",poi:"#2f5d50",hotel:"#775a91",noswim:"#777"})[t]||"#2f5d50"}
+function mapSvg(city){const m=maps[city];let s=`<svg viewBox="0 0 100 100" preserveAspectRatio="none"><rect width="100" height="100" fill="#eaf4f1"/><path d="M0,78 C20,69 26,82 45,74 S73,68 100,77 L100,100 L0,100Z" fill="#b8dbea"/><path d="M8,18 C30,28 34,14 52,25 S77,19 92,31" stroke="#d6c8a6" stroke-width="3" fill="none"/><path d="M18,86 C35,71 45,56 58,44 S80,32 91,14" stroke="#fff" stroke-width="2.5" fill="none"/><path d="M12,42 C32,48 55,55 84,59" stroke="#fff" stroke-width="2" fill="none"/>`;m.p.forEach((p,i)=>{const c=markerColor(p[0]);s+=`<circle cx="${p[3]}" cy="${p[4]}" r="4.6" fill="${c}" stroke="#fff" stroke-width="1.4"/><text x="${p[3]}" y="${p[4]+1.7}" font-size="5.2" text-anchor="middle">${p[1]}</text><text x="${p[3]+5.5}" y="${p[4]+1.5}" font-size="3.7" fill="#243029" style="font-weight:700">${i+1}</text>`});return s+`</svg>`}
+function renderMap(city){const m=maps[city];const info=infographicMaps[city];if(info){return `<div class="card mapcard"><div class="maphead"><div class="small">INFOGRAFÍA OFFLINE</div><h2 style="margin:.2rem 0">${city}</h2><div class="small">${m.sub}</div></div><img src="${info}" alt="Mapa infográfico offline de ${city}" style="display:block;width:100%;height:auto;border-top:1px solid var(--line)" loading="lazy"/><div class="legend"><span>🍴 restaurante</span><span>📸 mejor foto</span><span>🏊 baño</span><span>🏛️ interés</span></div><div class="mapnote">Infografía orientativa para el viaje. No sustituye navegación GPS.</div><div class="mapbuttons"><button class="secondary" onclick="openMap('${city}')">Abrir mapa online</button></div></div>`}return `<div class="card mapcard"><div class="maphead"><div class="small">MAPA OFFLINE ORIENTATIVO</div><h2 style="margin:.2rem 0">${city}</h2><div class="small">${m.sub}</div></div><div class="mapwrap">${mapSvg(city)}</div><div class="legend"><span>🍴 comida</span><span>📸 foto</span><span>🏊 baño</span><span>🏛️ interés</span></div><div class="poi-list">${m.p.map((p,i)=>`<div class="poi-row"><div class="ico">${p[1]}</div><div><strong>${i+1}. ${p[2]}</strong><div class="small">${p[5]}</div></div></div>`).join("")}</div><div class="mapnote">Mapa integrado para consulta offline. La posición es orientativa.</div><div class="mapbuttons"><button class="secondary" onclick="openMap('${city}')">Abrir mapa online</button></div></div>`}
+function openTimeline(d){const day=trip.days.find(x=>x.d===d),t=timelineDB[d]||[];timelineTitle.textContent=`${d} agosto · línea del tiempo`;timelineBody.innerHTML=`<div class="routeband">${day.subtitle}</div><div class="timeline">${t.map(x=>`<div class="titem"><div class="ttime">${x[0]}</div><div class="ttitle">${x[1]}</div><div class="tdesc">${x[2]}</div></div>`).join("")}</div>`;timelineModal.classList.remove("hidden")}
+function closeTimeline(){timelineModal.classList.add("hidden")}
+openDay=function(d){currentDay=d;const day=trip.days.find(x=>x.d===d);dayContent.innerHTML=`<div class="section"><div class="routeband">${d} agosto · ${day.title}</div><div class="toolbar"><button class="red" onclick="openTimeline(${d})">🕒 Ver línea del tiempo</button><button class="secondary" onclick="showView('budget')">💶 Añadir gasto</button></div>${renderActivity('MAÑANA',day.morning,'morning')}${renderActivity('TARDE',day.afternoon,'afternoon')}${renderActivity('NOCHE',day.night,'night')}${(cityByDay[d]||[]).length?`<div class="section"><h2>Mapas offline del día</h2>${cityByDay[d].map(renderMap).join("")}</div>`:""}</div>`;showView('day')};
+renderReservations=function(){reservationsList.innerHTML=reservations.map(r=>`<div class="card reserve"><div><div><span class="statusdot"></span> <strong>${r.title}</strong></div><div class="small" style="margin-top:4px">${r.meta}</div>${r.note?`<div class="notice" style="margin-top:8px">${r.note}</div>`:""}</div><div style="text-align:right"><div class="paid">${r.status}</div><div class="money">${euro(r.amount)}</div></div></div>`).join("")};
+renderReservations();
+</script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+{
+  "id": "./",
+  "name": "Cinque Terre · Viaje familiar 2026",
+  "short_name": "Cinque Terre",
+  "description": "Itinerario familiar offline de Cinque Terre: días, mapas, reservas y gastos.",
+  "start_url": "./index.html?source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "orientation": "portrait-primary",
+  "background_color": "#f7f1e3",
+  "theme_color": "#2f5d50",
+  "categories": [
+    "travel",
+    "lifestyle"
+  ],
+  "lang": "es-ES",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Hoy",
+      "short_name": "Hoy",
+      "url": "./index.html?view=today",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Gastos",
+      "short_name": "Gastos",
+      "url": "./index.html?view=budget",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ]
+}

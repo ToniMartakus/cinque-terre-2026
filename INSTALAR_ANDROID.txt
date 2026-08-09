@@ -1,0 +1,34 @@
+CINQUE TERRE V4 · INSTALAR EN ANDROID
+
+1. NO abras index.html directamente como archivo.
+   Una PWA necesita ejecutarse desde HTTPS (o localhost durante pruebas).
+
+2. OPCIÓN FÁCIL: NETLIFY
+   - Entra en https://app.netlify.com/drop desde un ordenador.
+   - Arrastra la CARPETA descomprimida de esta app (o despliega su contenido).
+   - Netlify creará una dirección HTTPS.
+   - Abre esa dirección en Chrome en el móvil Android.
+
+3. INSTALAR
+   - En la portada debería aparecer “Instalar app”.
+   - Si no aparece: Chrome → ⋮ → “Instalar aplicación” o “Añadir a pantalla de inicio”.
+   - Acepta la instalación.
+
+4. OFFLINE
+   - Abre la app instalada una vez con conexión.
+   - Espera unos segundos.
+   - Pon el móvil en modo avión y vuelve a abrirla para comprobar.
+   - Itinerario, mapas/infografías, reservas y gastos funcionarán offline.
+   - Google Maps y enlaces externos requieren Internet.
+
+5. DATOS / GASTOS
+   - Se guardan en el almacenamiento local de la app instalada en ESE dispositivo.
+   - No borres los datos de Chrome/la PWA si quieres conservarlos.
+   - Si desinstalas la app o borras sus datos, los gastos añadidos pueden perderse.
+
+ARCHIVOS PWA
+- manifest.webmanifest
+- sw.js
+- icons/
+- maps/
+- index.html
